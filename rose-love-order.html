@@ -1,0 +1,1070 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'nonce-cm9zZS1sb3ZlLWFwcA=='; style-src 'self' 'nonce-cm9zZS1sb3ZlLWFwcA=='; img-src 'self' https://commons.wikimedia.org https://upload.wikimedia.org; connect-src 'self' https://mocki.io https://commons.wikimedia.org https://upload.wikimedia.org; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests">
+  <title>Hey pookie</title>
+  <style nonce="cm9zZS1sb3ZlLWFwcA==">
+    :root {
+      color-scheme: light;
+      --rose: #c83362;
+      --rose-dark: #8f1e46;
+      --rose-soft: #fff0f5;
+      --blush: #ffe7ee;
+      --cream: #fffaf7;
+      --ink: #34212a;
+      --muted: #765b65;
+      --leaf: #3c7c61;
+      --line: rgba(143, 30, 70, 0.16);
+      --shadow: 0 24px 70px rgba(96, 31, 57, 0.16);
+      --radius: 8px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.5;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, rgba(255, 217, 230, 0.95), transparent 34rem),
+        linear-gradient(145deg, #fff8fb 0%, #fffaf4 52%, #eef9f1 100%);
+    }
+
+    button,
+    input,
+    select {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .shell {
+      width: min(1120px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 32px 0 48px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 22px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .brand-mark {
+      display: grid;
+      width: 42px;
+      height: 42px;
+      place-items: center;
+      border-radius: 50%;
+      background: #ffffff;
+      box-shadow: 0 10px 26px rgba(200, 51, 98, 0.18);
+      color: var(--rose);
+      font-size: 1.35rem;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(1.65rem, 4vw, 3rem);
+      letter-spacing: 0;
+      line-height: 1.05;
+    }
+
+    .subtitle {
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: 0.98rem;
+    }
+
+    .reset-link {
+      border: 0;
+      background: transparent;
+      color: var(--rose-dark);
+      text-decoration: underline;
+      text-underline-offset: 4px;
+      padding: 8px 2px;
+      white-space: nowrap;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(280px, 410px) 1fr;
+      gap: 22px;
+      align-items: start;
+    }
+
+    .conversation,
+    .catalog-panel {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, 0.78);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(12px);
+    }
+
+    .conversation {
+      position: sticky;
+      top: 20px;
+      padding: 20px;
+    }
+
+    .conversation-title,
+    .panel-title {
+      margin: 0 0 14px;
+      color: var(--rose-dark);
+      font-size: 1rem;
+      font-weight: 800;
+      letter-spacing: 0;
+    }
+
+    .chat-log {
+      display: grid;
+      gap: 12px;
+      min-height: 168px;
+    }
+
+    .chat-row {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+    }
+
+    .avatar {
+      display: grid;
+      flex: 0 0 42px;
+      width: 42px;
+      height: 42px;
+      place-items: center;
+      border-radius: 50%;
+      background: var(--blush);
+      border: 1px solid rgba(200, 51, 98, 0.18);
+      font-size: 1.55rem;
+    }
+
+    .bubble {
+      max-width: 100%;
+      padding: 11px 13px;
+      border-radius: 8px;
+      background: #ffffff;
+      border: 1px solid rgba(200, 51, 98, 0.13);
+      box-shadow: 0 10px 24px rgba(96, 31, 57, 0.08);
+    }
+
+    .bubble.user {
+      margin-left: 52px;
+      background: #f1fff7;
+      border-color: rgba(60, 124, 97, 0.18);
+    }
+
+    .reply-form {
+      display: grid;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .reply-form label,
+    .country-panel label {
+      color: var(--muted);
+      font-size: 0.92rem;
+      font-weight: 700;
+    }
+
+    .input-line,
+    .country-line {
+      display: flex;
+      gap: 10px;
+    }
+
+    input,
+    select {
+      min-width: 0;
+      width: 100%;
+      border: 1px solid rgba(143, 30, 70, 0.22);
+      border-radius: var(--radius);
+      background: #fff;
+      color: var(--ink);
+      padding: 12px 13px;
+      outline: none;
+    }
+
+    input:focus,
+    select:focus {
+      border-color: var(--rose);
+      box-shadow: 0 0 0 4px rgba(200, 51, 98, 0.13);
+    }
+
+    .primary-btn,
+    .order-btn {
+      border: 0;
+      border-radius: var(--radius);
+      background: var(--rose);
+      color: #fff;
+      padding: 12px 16px;
+      font-weight: 800;
+      box-shadow: 0 12px 24px rgba(200, 51, 98, 0.22);
+      transition: transform 160ms ease, background 160ms ease, box-shadow 160ms ease;
+    }
+
+    .primary-btn:hover,
+    .order-btn:hover {
+      transform: translateY(-1px);
+      background: var(--rose-dark);
+      box-shadow: 0 16px 30px rgba(143, 30, 70, 0.24);
+    }
+
+    .primary-btn:disabled,
+    .order-btn:disabled {
+      cursor: not-allowed;
+      opacity: 0.62;
+      transform: none;
+    }
+
+    .heart-zone {
+      display: grid;
+      gap: 8px;
+      place-items: center;
+      margin-top: 18px;
+    }
+
+    .heart-btn {
+      display: grid;
+      position: relative;
+      isolation: isolate;
+      width: 76px;
+      height: 76px;
+      place-items: center;
+      border: 0;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #ff477e, #d91455);
+      color: #ffffff;
+      font-size: 2rem;
+      box-shadow: 0 18px 40px rgba(217, 20, 85, 0.32);
+      transform: translateZ(0);
+      transition: transform 180ms ease, box-shadow 180ms ease;
+      animation: heartBob 2100ms ease-in-out infinite;
+      overflow: visible;
+    }
+
+    .heart-btn::before,
+    .heart-btn::after {
+      position: absolute;
+      z-index: 0;
+      bottom: 4px;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: rgba(255, 125, 166, 0.42);
+      box-shadow:
+        22px -10px 0 -3px rgba(255, 255, 255, 0.86),
+        38px 4px 0 -5px rgba(255, 125, 166, 0.5);
+      content: "";
+      opacity: 0;
+      pointer-events: none;
+      animation: heartBubble 1700ms ease-in-out infinite;
+    }
+
+    .heart-btn::before {
+      left: 4px;
+    }
+
+    .heart-btn::after {
+      right: 7px;
+      animation-delay: 680ms;
+      transform: scale(0.78);
+    }
+
+    .heart-label {
+      color: var(--rose-dark);
+      font-size: 0.95rem;
+      font-weight: 900;
+      text-align: center;
+    }
+
+    .heart-glyph {
+      position: relative;
+      z-index: 1;
+    }
+
+    .heart-btn:hover {
+      transform: scale(1.06);
+      box-shadow: 0 24px 48px rgba(217, 20, 85, 0.4);
+    }
+
+    .heart-btn:focus-visible,
+    .image-button:focus-visible,
+    .reset-link:focus-visible,
+    .primary-btn:focus-visible,
+    .order-btn:focus-visible {
+      outline: 3px solid rgba(200, 51, 98, 0.36);
+      outline-offset: 3px;
+    }
+
+    .country-panel {
+      display: grid;
+      gap: 10px;
+      margin-top: 18px;
+      padding: 14px;
+      border: 1px solid rgba(200, 51, 98, 0.14);
+      border-radius: var(--radius);
+      background: var(--rose-soft);
+    }
+
+    .catalog-panel {
+      min-height: 560px;
+      padding: 20px;
+    }
+
+    .panel-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .panel-copy {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .status-pill {
+      flex: 0 0 auto;
+      border: 1px solid rgba(60, 124, 97, 0.18);
+      border-radius: 999px;
+      background: #f1fff7;
+      color: var(--leaf);
+      padding: 8px 12px;
+      font-size: 0.85rem;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .empty-state {
+      display: grid;
+      min-height: 420px;
+      place-items: center;
+      border: 1px dashed rgba(143, 30, 70, 0.24);
+      border-radius: var(--radius);
+      background: rgba(255, 240, 245, 0.46);
+      text-align: center;
+      color: var(--muted);
+      padding: 24px;
+    }
+
+    .empty-state strong {
+      display: block;
+      margin-bottom: 4px;
+      color: var(--rose-dark);
+      font-size: 1.1rem;
+    }
+
+    .flower-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+    }
+
+    .flower-card {
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #ffffff;
+      box-shadow: 0 16px 34px rgba(96, 31, 57, 0.1);
+    }
+
+    .image-button {
+      display: block;
+      width: 100%;
+      padding: 0;
+      border: 0;
+      background: #f8dde7;
+    }
+
+    .flower-card img {
+      display: block;
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      object-fit: cover;
+      transition: transform 220ms ease;
+    }
+
+    .image-button:hover img {
+      transform: scale(1.035);
+    }
+
+    .card-body {
+      display: grid;
+      gap: 8px;
+      padding: 14px;
+    }
+
+    .flower-name {
+      margin: 0;
+      color: var(--rose-dark);
+      font-size: 1.05rem;
+      line-height: 1.2;
+    }
+
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .tag {
+      border-radius: 999px;
+      background: var(--rose-soft);
+      color: var(--rose-dark);
+      padding: 5px 9px;
+      font-size: 0.82rem;
+      font-weight: 800;
+    }
+
+    .shop {
+      color: var(--muted);
+      font-size: 0.94rem;
+    }
+
+    .stars {
+      color: #b36b00;
+      font-weight: 900;
+      letter-spacing: 0;
+    }
+
+    .notice {
+      position: fixed;
+      left: 50%;
+      bottom: 24px;
+      z-index: 20;
+      width: min(520px, calc(100% - 28px));
+      padding: 13px 16px;
+      border: 1px solid rgba(143, 30, 70, 0.18);
+      border-radius: var(--radius);
+      background: #ffffff;
+      color: var(--rose-dark);
+      box-shadow: 0 20px 46px rgba(96, 31, 57, 0.2);
+      font-weight: 800;
+      text-align: center;
+      transform: translate(-50%, 130%);
+      opacity: 0;
+      pointer-events: none;
+      transition: transform 220ms ease, opacity 220ms ease;
+    }
+
+    .notice.show {
+      transform: translate(-50%, 0);
+      opacity: 1;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    @keyframes heartBob {
+      0%,
+      100% {
+        translate: 0 0;
+      }
+
+      50% {
+        translate: 0 -5px;
+      }
+    }
+
+    @keyframes heartBubble {
+      0% {
+        opacity: 0;
+        transform: translateY(14px) scale(0.55);
+      }
+
+      24% {
+        opacity: 0.85;
+      }
+
+      100% {
+        opacity: 0;
+        transform: translateY(-42px) scale(1.12);
+      }
+    }
+
+    @media (max-width: 840px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .conversation {
+        position: static;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .shell {
+        width: min(100% - 20px, 1120px);
+        padding-top: 18px;
+      }
+
+      .topbar,
+      .panel-head,
+      .input-line,
+      .country-line {
+        align-items: stretch;
+        flex-direction: column;
+      }
+
+      .reset-link {
+        align-self: flex-start;
+      }
+
+      .conversation,
+      .catalog-panel {
+        padding: 14px;
+      }
+
+      .status-pill {
+        width: fit-content;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .heart-btn,
+      .heart-btn::before,
+      .heart-btn::after,
+      .flower-card img,
+      .notice {
+        animation: none;
+        transition: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <header class="topbar">
+      <div class="brand" aria-label="Hey pookie ordering">
+        <span class="brand-mark" aria-hidden="true">❤</span>
+        <div>
+          <h1>Hey pookie</h1>
+        </div>
+      </div>
+      <button class="reset-link" type="button" id="resetButton">TTYL?</button>
+    </header>
+
+    <div class="layout">
+      <section class="conversation" aria-labelledby="conversationTitle">
+        <h2 class="conversation-title" id="conversationTitle">Conversation</h2>
+        <div class="chat-log" id="chatLog" aria-live="polite"></div>
+
+        <form class="reply-form" id="replyForm" autocomplete="off">
+          <label for="replyInput">Your answer</label>
+          <div class="input-line">
+            <input id="replyInput" name="reply" type="text" maxlength="120" placeholder="Type your reply" required>
+            <button class="primary-btn" type="submit">Send</button>
+          </div>
+        </form>
+
+        <div class="heart-zone hidden" id="heartZone">
+          <button class="heart-btn" id="heartButton" type="button" aria-label="Touch my heart" aria-describedby="heartHint"><span class="heart-glyph" aria-hidden="true">❤</span></button>
+          <span class="heart-label" id="heartHint">Touch my heart</span>
+        </div>
+
+        <div class="country-panel hidden" id="countryPanel">
+          <label for="countrySelect">Import flowers from</label>
+          <div class="country-line">
+            <select id="countrySelect"></select>
+            <button class="order-btn hidden" id="orderButton" type="button">Order</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="catalog-panel" aria-labelledby="catalogTitle">
+        <div class="panel-head">
+          <div>
+            <h2 class="panel-title" id="catalogTitle">Ranked flowers</h2>
+            <p class="panel-copy" id="panelCopy">Choose a country after the heart appears.</p>
+          </div>
+          <span class="status-pill" id="apiStatus">Loading catalog</span>
+        </div>
+        <div id="flowerOutput">
+          <div class="empty-state">
+            <div>
+              <strong>No country selected yet</strong>
+              Start with the chat, then pick a country to see the roses.
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <div class="notice" id="toast" role="status" aria-live="polite"></div>
+
+  <script nonce="cm9zZS1sb3ZlLWFwcA==">
+    "use strict";
+
+    /*
+      API handling:
+      A no-key public rose commerce API with rose shape, rating, shop location, and
+      downloadable images is not broadly available, so this app uses the mock-API
+      pathway requested in the brief. MOCK_API_URL is deliberately isolated so it
+      can be swapped for a real endpoint later without rewriting the UI.
+    */
+    const MOCK_API_URL = "https://mocki.io/v1/d4867d8b-b5d5-4a48-a4ab-79131b5809b8";
+    const TRUSTED_IMAGE_ORIGINS = new Set([
+      "https://commons.wikimedia.org",
+      "https://upload.wikimedia.org"
+    ]);
+
+    const FALLBACK_ROSES = [
+      {
+        id: "ke-eden-01",
+        name: "Nairobi Velvet",
+        shape: "spiral",
+        rating: 4.9,
+        shop: { country: "Kenya", name: "Eden Blooms Nairobi" },
+        imageUrl: "https://commons.wikimedia.org/wiki/Special:FilePath/Red%20Rose%20flower%27.jpg"
+      },
+      {
+        id: "nl-aurora-01",
+        name: "Dutch Aurora",
+        shape: "cup",
+        rating: 4.9,
+        shop: { country: "Netherlands", name: "Amsterdam Petal House" },
+        imageUrl: "https://commons.wikimedia.org/wiki/Special:FilePath/Rose%20close%20up.jpg"
+      },
+      {
+        id: "ec-sol-01",
+        name: "Quito Solstice",
+        shape: "peony",
+        rating: 4.8,
+        shop: { country: "Ecuador", name: "Quito Rose Export" },
+        imageUrl: "https://commons.wikimedia.org/wiki/Special:FilePath/Close-up%20of%20a%20rose%20in%20a%20park%20%2848051379961%29.jpg"
+      },
+      {
+        id: "jp-momo-01",
+        name: "Kyoto Momo",
+        shape: "vintage",
+        rating: 4.8,
+        shop: { country: "Japan", name: "Kyoto Hanaya Studio" },
+        imageUrl: "https://commons.wikimedia.org/wiki/Special:FilePath/Rose%20Closeup%20%286878894147%29.jpg"
+      },
+      {
+        id: "ke-savanna-01",
+        name: "Savanna Blush",
+        shape: "cup",
+        rating: 4.7,
+        shop: { country: "Kenya", name: "Naivasha Rose Market" },
+        imageUrl: "https://commons.wikimedia.org/wiki/Special:FilePath/Red%20rose%201.jpg"
+      },
+      {
+        id: "nl-canal-01",
+        name: "Canal Pink",
+        shape: "garden",
+        rating: 4.6,
+        shop: { country: "Netherlands", name: "Haarlem Flower Dock" },
+        imageUrl: "https://commons.wikimedia.org/wiki/Special:FilePath/Close-up%20of%20a%20rose%20%289350352517%29.jpg"
+      },
+      {
+        id: "ec-andean-01",
+        name: "Andean Candlelight",
+        shape: "spiral",
+        rating: 4.5,
+        shop: { country: "Ecuador", name: "Andes Floral Co." },
+        imageUrl: "https://commons.wikimedia.org/wiki/Special:FilePath/A%20red%20rose.jpg"
+      },
+      {
+        id: "jp-ume-01",
+        name: "Tokyo Ume Rose",
+        shape: "quartered",
+        rating: 4.4,
+        shop: { country: "Japan", name: "Tokyo Bloom Atelier" },
+        imageUrl: "https://commons.wikimedia.org/wiki/Special:FilePath/Red%20rose.jpg"
+      }
+    ];
+
+    const state = {
+      roses: [],
+      selectedCountry: "",
+      toastTimer: 0
+    };
+
+    const chatLog = document.getElementById("chatLog");
+    const replyForm = document.getElementById("replyForm");
+    const replyInput = document.getElementById("replyInput");
+    const heartZone = document.getElementById("heartZone");
+    const heartButton = document.getElementById("heartButton");
+    const countryPanel = document.getElementById("countryPanel");
+    const countrySelect = document.getElementById("countrySelect");
+    const orderButton = document.getElementById("orderButton");
+    const resetButton = document.getElementById("resetButton");
+    const flowerOutput = document.getElementById("flowerOutput");
+    const panelCopy = document.getElementById("panelCopy");
+    const apiStatus = document.getElementById("apiStatus");
+    const toast = document.getElementById("toast");
+
+    document.addEventListener("DOMContentLoaded", () => {
+      resetConversation();
+      loadRoseCatalog();
+    });
+
+    replyForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const sanitizedReply = sanitizeUserText(replyInput.value);
+      if (!sanitizedReply) {
+        replyInput.value = "";
+        replyInput.focus();
+        return;
+      }
+
+      // Security measure: user text is inserted with textContent only.
+      addUserBubble(sanitizedReply);
+      replyInput.value = "";
+      replyForm.classList.add("hidden");
+      addMaleMessage("I got some flowers for you");
+      heartZone.classList.remove("hidden");
+    });
+
+    heartButton.addEventListener("click", () => {
+      populateCountryOptions();
+      countryPanel.classList.remove("hidden");
+      countrySelect.focus();
+    });
+
+    countrySelect.addEventListener("change", () => {
+      state.selectedCountry = countrySelect.value;
+      orderButton.classList.toggle("hidden", !state.selectedCountry);
+    });
+
+    orderButton.addEventListener("click", () => {
+      const country = countrySelect.value;
+      if (!country) return;
+      showFlowersForCountry(country);
+    });
+
+    resetButton.addEventListener("click", () => {
+      window.location.reload();
+    });
+
+    function resetConversation() {
+      chatLog.replaceChildren();
+      replyForm.classList.remove("hidden");
+      heartZone.classList.add("hidden");
+      countryPanel.classList.add("hidden");
+      orderButton.classList.add("hidden");
+      countrySelect.replaceChildren();
+      state.selectedCountry = "";
+      replyInput.value = "";
+      addMaleMessage("hey there my love");
+      replyInput.focus();
+    }
+
+    async function loadRoseCatalog() {
+      try {
+        const response = await fetch(MOCK_API_URL, {
+          method: "GET",
+          mode: "cors",
+          credentials: "omit",
+          headers: { "Accept": "application/json" }
+        });
+
+        if (!response.ok) {
+          throw new Error("Mock API returned a non-OK status.");
+        }
+
+        const payload = await response.json();
+        const roses = normalizeRosePayload(payload);
+        if (!isValidRoseCatalog(roses)) {
+          throw new Error("Mock API schema did not match the rose catalog shape.");
+        }
+
+        state.roses = rankRoses(roses);
+        apiStatus.textContent = "Catalog ready";
+      } catch (error) {
+        state.roses = rankRoses(FALLBACK_ROSES);
+        apiStatus.textContent = "Catalog ready";
+      }
+    }
+
+    function normalizeRosePayload(payload) {
+      if (Array.isArray(payload)) return payload;
+      if (payload && Array.isArray(payload.roses)) return payload.roses;
+      if (payload && Array.isArray(payload.data)) return payload.data;
+      return [];
+    }
+
+    function isValidRoseCatalog(roses) {
+      return Array.isArray(roses) && roses.length >= 8 && roses.every((rose) => {
+        return typeof rose.name === "string" &&
+          typeof rose.shape === "string" &&
+          Number.isFinite(Number(rose.rating)) &&
+          rose.shop &&
+          typeof rose.shop.country === "string" &&
+          typeof rose.shop.name === "string" &&
+          isTrustedImageUrl(rose.imageUrl);
+      });
+    }
+
+    /*
+      Ranking logic:
+      Sort rating high-to-low first. Ties are resolved by country alphabetically,
+      then shop/name for stable display.
+    */
+    function rankRoses(roses) {
+      return roses
+        .filter((rose) => isTrustedImageUrl(rose.imageUrl))
+        .map((rose, index) => ({
+          id: String(rose.id || `rose-${index + 1}`),
+          name: String(rose.name),
+          shape: String(rose.shape),
+          rating: Number(rose.rating),
+          shop: {
+            country: String(rose.shop.country),
+            name: String(rose.shop.name)
+          },
+          imageUrl: String(rose.imageUrl)
+        }))
+        .sort((a, b) => {
+          const byRating = b.rating - a.rating;
+          if (byRating !== 0) return byRating;
+
+          const locationA = `${a.shop.country} ${a.shop.name}`;
+          const locationB = `${b.shop.country} ${b.shop.name}`;
+          const byLocation = locationA.localeCompare(locationB);
+          if (byLocation !== 0) return byLocation;
+
+          return a.name.localeCompare(b.name);
+        });
+    }
+
+    function populateCountryOptions() {
+      const countries = Array.from(new Set(state.roses.map((rose) => rose.shop.country))).sort();
+      countrySelect.replaceChildren();
+
+      const placeholder = document.createElement("option");
+      placeholder.value = "";
+      placeholder.textContent = "Select a country";
+      countrySelect.append(placeholder);
+
+      countries.forEach((country) => {
+        const option = document.createElement("option");
+        option.value = country;
+        option.textContent = country;
+        countrySelect.append(option);
+      });
+    }
+
+    function showFlowersForCountry(country) {
+      const flowers = state.roses.filter((rose) => rose.shop.country === country);
+      panelCopy.textContent = `${flowers.length} ranked rose choice${flowers.length === 1 ? "" : "s"} from ${country}.`;
+      flowerOutput.replaceChildren();
+
+      if (!flowers.length) {
+        const empty = document.createElement("div");
+        empty.className = "empty-state";
+        const message = document.createElement("div");
+        const strong = document.createElement("strong");
+        strong.textContent = "No roses found";
+        message.append(strong, document.createTextNode("Try another country from the list."));
+        empty.append(message);
+        flowerOutput.append(empty);
+        return;
+      }
+
+      const grid = document.createElement("div");
+      grid.className = "flower-grid";
+      flowers.forEach((rose, index) => grid.append(createFlowerCard(rose, index)));
+      flowerOutput.append(grid);
+
+      showToast("Look my love you are spoilt of choices click to download");
+    }
+
+    function createFlowerCard(rose, rankIndex) {
+      const card = document.createElement("article");
+      card.className = "flower-card";
+
+      const imageButton = document.createElement("button");
+      imageButton.className = "image-button";
+      imageButton.type = "button";
+      imageButton.setAttribute("aria-label", `Download image for ${rose.name}`);
+      imageButton.addEventListener("click", () => downloadRoseImage(rose));
+
+      const img = document.createElement("img");
+      img.loading = "lazy";
+      img.decoding = "async";
+      img.referrerPolicy = "no-referrer";
+      img.src = rose.imageUrl;
+      img.alt = `${rose.name} rose`;
+      imageButton.append(img);
+
+      const body = document.createElement("div");
+      body.className = "card-body";
+
+      const name = document.createElement("h3");
+      name.className = "flower-name";
+      name.textContent = rose.name;
+
+      const meta = document.createElement("div");
+      meta.className = "meta";
+
+      const rank = document.createElement("span");
+      rank.className = "tag";
+      rank.textContent = `Rank #${rankIndex + 1}`;
+
+      const shape = document.createElement("span");
+      shape.className = "tag";
+      shape.textContent = rose.shape;
+
+      const rating = document.createElement("span");
+      rating.className = "tag stars";
+      rating.textContent = `${starRating(rose.rating)} ${rose.rating.toFixed(1)}`;
+
+      meta.append(rank, shape, rating);
+
+      const shop = document.createElement("div");
+      shop.className = "shop";
+      shop.textContent = `${rose.shop.country} - ${rose.shop.name}`;
+
+      body.append(name, meta, shop);
+      card.append(imageButton, body);
+      return card;
+    }
+
+    /*
+      Download function:
+      The URL is parsed with the URL API, checked against trusted origins, fetched
+      as a Blob, then downloaded through a temporary same-document anchor. No eval,
+      no user-provided scriptable URL, and filenames are cleaned.
+    */
+    async function downloadRoseImage(rose) {
+      if (!isTrustedImageUrl(rose.imageUrl)) {
+        showToast("That image source is not trusted for download.");
+        return;
+      }
+
+      try {
+        const response = await fetch(rose.imageUrl, {
+          method: "GET",
+          mode: "cors",
+          credentials: "omit",
+          referrerPolicy: "no-referrer"
+        });
+
+        if (!response.ok) {
+          throw new Error("Image download failed.");
+        }
+
+        const blob = await response.blob();
+        if (!blob.type.startsWith("image/")) {
+          throw new Error("Downloaded file is not an image.");
+        }
+
+        const objectUrl = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = objectUrl;
+        link.download = `${safeFileName(rose.name)}.jpg`;
+        document.body.append(link);
+        link.click();
+        link.remove();
+        window.setTimeout(() => URL.revokeObjectURL(objectUrl), 0);
+        showToast(`${rose.name} is downloading.`);
+      } catch (error) {
+        // Fallback for browsers that block cross-origin blob downloads.
+        const link = document.createElement("a");
+        link.href = rose.imageUrl;
+        link.target = "_blank";
+        link.rel = "noopener noreferrer";
+        link.download = `${safeFileName(rose.name)}.jpg`;
+        document.body.append(link);
+        link.click();
+        link.remove();
+        showToast("Opened the trusted image URL for download.");
+      }
+    }
+
+    function addMaleMessage(message) {
+      const row = document.createElement("div");
+      row.className = "chat-row";
+
+      const avatar = document.createElement("span");
+      avatar.className = "avatar";
+      avatar.setAttribute("aria-label", "Male speaker");
+      avatar.textContent = "👨‍🦰";
+
+      const bubble = document.createElement("div");
+      bubble.className = "bubble";
+      bubble.textContent = message;
+
+      row.append(avatar, bubble);
+      chatLog.append(row);
+    }
+
+    function addUserBubble(message) {
+      const bubble = document.createElement("div");
+      bubble.className = "bubble user";
+      bubble.textContent = message;
+      chatLog.append(bubble);
+    }
+
+    /*
+      Security measures:
+      User input is trimmed, normalized, length-limited, and rendered only via
+      textContent. No innerHTML is used for untrusted data.
+    */
+    function sanitizeUserText(value) {
+      return String(value || "")
+        .normalize("NFKC")
+        .replace(/[\u0000-\u001F\u007F]/g, "")
+        .trim()
+        .slice(0, 120);
+    }
+
+    function isTrustedImageUrl(value) {
+      try {
+        const url = new URL(String(value));
+        return url.protocol === "https:" && TRUSTED_IMAGE_ORIGINS.has(url.origin);
+      } catch (error) {
+        return false;
+      }
+    }
+
+    function safeFileName(value) {
+      const cleaned = String(value)
+        .normalize("NFKD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/[^a-z0-9]+/gi, "-")
+        .replace(/^-+|-+$/g, "")
+        .toLowerCase();
+      return cleaned || "rose";
+    }
+
+    function starRating(rating) {
+      const fullStars = Math.max(1, Math.min(5, Math.round(rating)));
+      return "★".repeat(fullStars) + "☆".repeat(5 - fullStars);
+    }
+
+    function showToast(message) {
+      window.clearTimeout(state.toastTimer);
+      toast.textContent = message;
+      toast.classList.add("show");
+      state.toastTimer = window.setTimeout(() => {
+        toast.classList.remove("show");
+      }, 3600);
+    }
+  </script>
+</body>
+</html>
