@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'nonce-cm9zZS1sb3ZlLWFwcA=='; style-src 'self' 'nonce-cm9zZS1sb3ZlLWFwcA=='; img-src 'self' https://commons.wikimedia.org https://upload.wikimedia.org; connect-src 'self' https://mocki.io https://commons.wikimedia.org https://upload.wikimedia.org; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'nonce-cm9zZS1sb3ZlLWFwcA==' https://cdnjs.cloudflare.com; style-src 'self' 'nonce-cm9zZS1sb3ZlLWFwcA=='; img-src 'self' https://commons.wikimedia.org https://upload.wikimedia.org; connect-src 'self' https://mocki.io https://commons.wikimedia.org https://upload.wikimedia.org; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests">
   <title>Hey pookie</title>
   <style nonce="cm9zZS1sb3ZlLWFwcA==">
     :root {
@@ -100,6 +100,62 @@
       text-underline-offset: 4px;
       padding: 8px 2px;
       white-space: nowrap;
+    }
+
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-left: auto;
+    }
+
+    .cart-toggle {
+      display: inline-grid;
+      position: relative;
+      min-width: 48px;
+      height: 48px;
+      place-items: center;
+      border: 1px solid rgba(143, 30, 70, 0.18);
+      border-radius: 50%;
+      background: #ffffff;
+      color: var(--rose-dark);
+      box-shadow: 0 12px 28px rgba(96, 31, 57, 0.12);
+      font-size: 1.25rem;
+      transition: transform 160ms ease, box-shadow 160ms ease;
+    }
+
+    .cart-toggle:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 16px 34px rgba(96, 31, 57, 0.18);
+    }
+
+    .cart-badge {
+      position: absolute;
+      right: -4px;
+      top: -5px;
+      display: grid;
+      min-width: 23px;
+      height: 23px;
+      place-items: center;
+      border: 2px solid #ffffff;
+      border-radius: 999px;
+      background: var(--rose);
+      color: #ffffff;
+      padding: 0 6px;
+      font-size: 0.72rem;
+      font-weight: 900;
+      line-height: 1;
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
     }
 
     .layout {
@@ -308,6 +364,12 @@
 
     .heart-btn:focus-visible,
     .image-button:focus-visible,
+    .cart-toggle:focus-visible,
+    .cart-close:focus-visible,
+    .cart-quantity-btn:focus-visible,
+    .remove-cart-btn:focus-visible,
+    .add-cart-btn:focus-visible,
+    .checkout-btn:focus-visible,
     .reset-link:focus-visible,
     .primary-btn:focus-visible,
     .order-btn:focus-visible {
@@ -441,10 +503,271 @@
       font-size: 0.94rem;
     }
 
+    .card-actions {
+      margin-top: 4px;
+    }
+
+    .add-cart-btn {
+      width: 100%;
+      border: 0;
+      border-radius: var(--radius);
+      background: #fff0f5;
+      color: var(--rose-dark);
+      padding: 10px 12px;
+      font-weight: 900;
+      box-shadow: inset 0 0 0 1px rgba(143, 30, 70, 0.14);
+      transition: transform 160ms ease, background 160ms ease, box-shadow 160ms ease;
+    }
+
+    .add-cart-btn:hover {
+      transform: translateY(-1px);
+      background: #ffe1ec;
+      box-shadow: inset 0 0 0 1px rgba(143, 30, 70, 0.22), 0 12px 22px rgba(96, 31, 57, 0.1);
+    }
+
     .stars {
       color: #b36b00;
       font-weight: 900;
       letter-spacing: 0;
+    }
+
+    .cart-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 40;
+      background: rgba(52, 33, 42, 0.28);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 220ms ease;
+    }
+
+    .cart-backdrop.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .cart-panel {
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 50;
+      display: flex;
+      flex-direction: column;
+      width: min(390px, 100%);
+      height: 100vh;
+      height: 100dvh;
+      max-height: 100vh;
+      max-height: 100dvh;
+      overflow: hidden;
+      border-left: 1px solid rgba(143, 30, 70, 0.18);
+      background: rgba(255, 250, 252, 0.98);
+      box-shadow: -24px 0 58px rgba(96, 31, 57, 0.2);
+      transform: translateX(105%);
+      transition: transform 260ms ease;
+    }
+
+    .cart-panel.open {
+      transform: translateX(0);
+    }
+
+    .cart-header,
+    .cart-footer {
+      padding: 18px;
+      background: #ffffff;
+    }
+
+    .cart-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .cart-title {
+      margin: 0;
+      color: var(--rose-dark);
+      font-size: 1.12rem;
+      line-height: 1.1;
+    }
+
+    .cart-subtitle {
+      margin: 4px 0 0;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .cart-close {
+      display: grid;
+      flex: 0 0 auto;
+      width: 38px;
+      height: 38px;
+      place-items: center;
+      border: 1px solid rgba(143, 30, 70, 0.14);
+      border-radius: 50%;
+      background: #fff7fa;
+      color: var(--rose-dark);
+      font-size: 1.35rem;
+      line-height: 1;
+    }
+
+    .cart-content {
+      flex: 1 1 auto;
+      min-height: 0;
+      overflow-y: auto;
+      padding: 16px;
+    }
+
+    .cart-empty {
+      display: grid;
+      min-height: 220px;
+      place-items: center;
+      border: 1px dashed rgba(143, 30, 70, 0.22);
+      border-radius: var(--radius);
+      background: rgba(255, 240, 245, 0.6);
+      color: var(--muted);
+      padding: 24px;
+      text-align: center;
+      font-weight: 800;
+    }
+
+    .cart-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .cart-item {
+      display: grid;
+      grid-template-columns: 72px 1fr;
+      gap: 12px;
+      border: 1px solid rgba(143, 30, 70, 0.14);
+      border-radius: var(--radius);
+      background: #ffffff;
+      padding: 10px;
+      box-shadow: 0 12px 26px rgba(96, 31, 57, 0.08);
+    }
+
+    .cart-thumb {
+      width: 72px;
+      height: 72px;
+      border-radius: var(--radius);
+      object-fit: cover;
+      background: #f8dde7;
+    }
+
+    .cart-item-main {
+      display: grid;
+      gap: 8px;
+      min-width: 0;
+    }
+
+    .cart-item-name {
+      margin: 0;
+      color: var(--rose-dark);
+      font-size: 0.98rem;
+      line-height: 1.2;
+    }
+
+    .cart-item-meta {
+      color: var(--muted);
+      font-size: 0.84rem;
+    }
+
+    .cart-controls {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .cart-quantity {
+      display: inline-flex;
+      align-items: center;
+      border: 1px solid rgba(143, 30, 70, 0.16);
+      border-radius: 999px;
+      background: #fff7fa;
+      overflow: hidden;
+    }
+
+    .cart-quantity-btn {
+      display: grid;
+      width: 32px;
+      height: 32px;
+      place-items: center;
+      border: 0;
+      background: transparent;
+      color: var(--rose-dark);
+      font-weight: 900;
+    }
+
+    .cart-quantity-value {
+      min-width: 30px;
+      color: var(--ink);
+      font-size: 0.9rem;
+      font-weight: 900;
+      text-align: center;
+    }
+
+    .remove-cart-btn {
+      border: 0;
+      background: transparent;
+      color: var(--rose-dark);
+      padding: 6px 0;
+      font-size: 0.86rem;
+      font-weight: 900;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .cart-footer {
+      display: grid;
+      flex: 0 0 auto;
+      gap: 12px;
+      padding-bottom: calc(18px + env(safe-area-inset-bottom));
+      border-top: 1px solid var(--line);
+    }
+
+    .cart-summary {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      color: var(--muted);
+      font-size: 0.94rem;
+      font-weight: 800;
+    }
+
+    .checkout-btn {
+      width: 100%;
+      border: 0;
+      border-radius: var(--radius);
+      background: linear-gradient(135deg, var(--rose), var(--rose-dark));
+      color: #ffffff;
+      padding: 13px 16px;
+      font-weight: 900;
+      box-shadow: 0 16px 34px rgba(143, 30, 70, 0.25);
+      transition: transform 160ms ease, box-shadow 160ms ease, opacity 160ms ease;
+    }
+
+    .checkout-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 20px 42px rgba(143, 30, 70, 0.3);
+    }
+
+    .checkout-btn:disabled {
+      cursor: not-allowed;
+      opacity: 0.58;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .cart-status {
+      min-height: 1.2em;
+      color: var(--muted);
+      font-size: 0.86rem;
+      text-align: center;
     }
 
     .notice {
@@ -520,12 +843,15 @@
         padding-bottom: calc(86px + env(safe-area-inset-bottom));
       }
 
-      .topbar,
       .panel-head,
       .input-line,
       .country-line {
         align-items: stretch;
         flex-direction: column;
+      }
+
+      .topbar {
+        align-items: center;
       }
 
       .reset-link {
@@ -580,7 +906,14 @@
           <h1>Hey pookie</h1>
         </div>
       </div>
-      <button class="reset-link" type="button" id="resetButton" aria-label="Refresh page">TTYL?</button>
+      <div class="top-actions">
+        <button class="cart-toggle" type="button" id="cartToggle" aria-label="Open cart" aria-controls="cartPanel" aria-expanded="false">
+          <span aria-hidden="true">&hearts;</span>
+          <span class="sr-only">Cart</span>
+          <span class="cart-badge" id="cartBadge">0</span>
+        </button>
+        <button class="reset-link" type="button" id="resetButton" aria-label="Refresh page">TTYL?</button>
+      </div>
     </header>
 
     <div class="layout">
@@ -630,8 +963,35 @@
     </div>
   </main>
 
+  <div class="cart-backdrop" id="cartBackdrop"></div>
+  <aside class="cart-panel" id="cartPanel" role="dialog" aria-modal="true" aria-labelledby="cartTitle" aria-hidden="true">
+    <div class="cart-header">
+      <div>
+        <h2 class="cart-title" id="cartTitle">Love cart</h2>
+        <p class="cart-subtitle">Build your bouquet before checkout.</p>
+      </div>
+      <button class="cart-close" type="button" id="cartClose" aria-label="Close cart">&times;</button>
+    </div>
+
+    <div class="cart-content">
+      <div class="cart-empty" id="cartEmpty">Cart is empty</div>
+      <div class="cart-list" id="cartList"></div>
+    </div>
+
+    <div class="cart-footer">
+      <div class="cart-summary">
+        <span>Total flowers</span>
+        <span id="cartTotal">0</span>
+      </div>
+      <button class="checkout-btn" type="button" id="checkoutButton">Checkout bouquet</button>
+      <div class="cart-status" id="cartStatus" aria-live="polite"></div>
+    </div>
+  </aside>
+
   <div class="notice" id="toast" role="status" aria-live="polite"></div>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js" integrity="sha512-XMVd28F1oH/O71fzwBnV7HucLxVwtxf26XV8P4wPk26EDxuGZ91N8bsOttmnomcCD3CS5ZMRL50H0GgOHvegtg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js" integrity="sha512-Qlv6VSKh1gDKGoJbnyA5RMXYcvnpIqhO++MhIM2fStMcGT9i2T//tSwYFlcyoRRDcDZ+TYHpH8azBBCyhpSeqw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script nonce="cm9zZS1sb3ZlLWFwcA==">
     "use strict";
 
@@ -643,6 +1003,7 @@
       can be swapped for a real endpoint later without rewriting the UI.
     */
     const MOCK_API_URL = "https://mocki.io/v1/d4867d8b-b5d5-4a48-a4ab-79131b5809b8";
+    const CART_STORAGE_KEY = "loveRoseCart";
     const TRUSTED_IMAGE_ORIGINS = new Set([
       "https://commons.wikimedia.org",
       "https://upload.wikimedia.org"
@@ -717,7 +1078,10 @@
 
     const state = {
       roses: [],
+      cart: [],
       selectedCountry: "",
+      hasOrdered: false,
+      checkoutInProgress: false,
       toastTimer: 0
     };
 
@@ -729,6 +1093,16 @@
     const countryPanel = document.getElementById("countryPanel");
     const countrySelect = document.getElementById("countrySelect");
     const orderButton = document.getElementById("orderButton");
+    const cartToggle = document.getElementById("cartToggle");
+    const cartBadge = document.getElementById("cartBadge");
+    const cartPanel = document.getElementById("cartPanel");
+    const cartBackdrop = document.getElementById("cartBackdrop");
+    const cartClose = document.getElementById("cartClose");
+    const cartEmpty = document.getElementById("cartEmpty");
+    const cartList = document.getElementById("cartList");
+    const cartTotal = document.getElementById("cartTotal");
+    const cartStatus = document.getElementById("cartStatus");
+    const checkoutButton = document.getElementById("checkoutButton");
     const resetButton = document.getElementById("resetButton");
     const flowerOutput = document.getElementById("flowerOutput");
     const panelCopy = document.getElementById("panelCopy");
@@ -736,6 +1110,8 @@
     const toast = document.getElementById("toast");
 
     document.addEventListener("DOMContentLoaded", () => {
+      state.cart = loadCart();
+      renderCart();
       resetConversation();
       loadRoseCatalog();
     });
@@ -774,8 +1150,25 @@
       showFlowersForCountry(country);
     });
 
+    cartToggle.addEventListener("click", () => {
+      openCart();
+      if (getCartTotal() === 0) {
+        showToast("Cart is empty");
+      }
+    });
+
+    cartClose.addEventListener("click", closeCart);
+    cartBackdrop.addEventListener("click", closeCart);
+    checkoutButton.addEventListener("click", checkoutCart);
+
     resetButton.addEventListener("click", () => {
       window.location.reload();
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && cartPanel.classList.contains("open")) {
+        closeCart();
+      }
     });
 
     function resetConversation() {
@@ -786,7 +1179,9 @@
       orderButton.classList.add("hidden");
       countrySelect.replaceChildren();
       state.selectedCountry = "";
+      state.hasOrdered = false;
       replyInput.value = "";
+      renderCart();
       addMaleMessage("hey there my love");
       replyInput.focus();
     }
@@ -812,9 +1207,11 @@
 
         state.roses = rankRoses(roses);
         apiStatus.textContent = "Catalog ready";
+        renderCart();
       } catch (error) {
         state.roses = rankRoses(FALLBACK_ROSES);
         apiStatus.textContent = "Catalog ready";
+        renderCart();
       }
     }
 
@@ -908,6 +1305,8 @@
       flowers.forEach((rose, index) => grid.append(createFlowerCard(rose, index)));
       flowerOutput.append(grid);
 
+      state.hasOrdered = true;
+      renderCart();
       showToast("Look my love you are spoilt of choices click to download");
     }
 
@@ -957,9 +1356,366 @@
       shop.className = "shop";
       shop.textContent = `${rose.shop.country} - ${rose.shop.name}`;
 
-      body.append(name, meta, shop);
+      const cardActions = document.createElement("div");
+      cardActions.className = "card-actions";
+
+      const addCartButton = document.createElement("button");
+      addCartButton.className = "add-cart-btn";
+      addCartButton.type = "button";
+      addCartButton.textContent = "Add to Cart";
+      addCartButton.addEventListener("click", () => addRoseToCart(rose));
+
+      cardActions.append(addCartButton);
+      body.append(name, meta, shop, cardActions);
       card.append(imageButton, body);
       return card;
+    }
+
+    /*
+      Cart logic:
+      Cart items are persisted in localStorage, rendered with textContent/createElement,
+      and checkout re-validates each item against the current trusted rose catalog so
+      edited localStorage cannot trigger arbitrary downloads.
+    */
+    function addRoseToCart(rose) {
+      if (!state.hasOrdered) {
+        showToast("Order flowers first, then build your bouquet.");
+        return;
+      }
+
+      const existing = state.cart.find((item) => item.id === rose.id);
+      if (existing) {
+        existing.quantity = Math.min(existing.quantity + 1, 99);
+      } else {
+        state.cart.push({
+          id: rose.id,
+          name: rose.name,
+          imageUrl: rose.imageUrl,
+          shape: rose.shape,
+          rating: rose.rating,
+          shop: {
+            country: rose.shop.country,
+            name: rose.shop.name
+          },
+          quantity: 1
+        });
+      }
+
+      saveCart();
+      renderCart();
+      openCart();
+      showToast(`${rose.name} added to cart.`);
+    }
+
+    function renderCart() {
+      const total = getCartTotal();
+      cartBadge.textContent = String(total);
+      cartTotal.textContent = String(total);
+      cartList.replaceChildren();
+      cartEmpty.classList.toggle("hidden", total > 0);
+
+      state.cart.forEach((item) => {
+        cartList.append(createCartItem(item));
+      });
+
+      checkoutButton.disabled = total === 0 || !state.hasOrdered || state.checkoutInProgress;
+
+      if (total === 0) {
+        cartStatus.textContent = "Cart is empty";
+      } else if (!state.hasOrdered) {
+        cartStatus.textContent = "Order flowers to checkout your bouquet.";
+      } else if (!state.checkoutInProgress) {
+        cartStatus.textContent = "";
+      }
+    }
+
+    function createCartItem(item) {
+      const row = document.createElement("article");
+      row.className = "cart-item";
+
+      const image = document.createElement("img");
+      image.className = "cart-thumb";
+      image.loading = "lazy";
+      image.decoding = "async";
+      image.referrerPolicy = "no-referrer";
+      image.src = item.imageUrl;
+      image.alt = `${item.name} rose`;
+
+      const main = document.createElement("div");
+      main.className = "cart-item-main";
+
+      const name = document.createElement("h3");
+      name.className = "cart-item-name";
+      name.textContent = item.name;
+
+      const meta = document.createElement("div");
+      meta.className = "cart-item-meta";
+      meta.textContent = `${item.shape} - ${item.rating.toFixed(1)} - ${item.shop.country}`;
+
+      const controls = document.createElement("div");
+      controls.className = "cart-controls";
+
+      const quantity = document.createElement("div");
+      quantity.className = "cart-quantity";
+      quantity.setAttribute("aria-label", `Quantity for ${item.name}`);
+
+      const decrement = document.createElement("button");
+      decrement.className = "cart-quantity-btn";
+      decrement.type = "button";
+      decrement.setAttribute("aria-label", `Decrease ${item.name} quantity`);
+      decrement.textContent = "-";
+      decrement.addEventListener("click", () => updateCartQuantity(item.id, item.quantity - 1));
+
+      const value = document.createElement("span");
+      value.className = "cart-quantity-value";
+      value.textContent = String(item.quantity);
+
+      const increment = document.createElement("button");
+      increment.className = "cart-quantity-btn";
+      increment.type = "button";
+      increment.setAttribute("aria-label", `Increase ${item.name} quantity`);
+      increment.textContent = "+";
+      increment.addEventListener("click", () => updateCartQuantity(item.id, item.quantity + 1));
+
+      quantity.append(decrement, value, increment);
+
+      const remove = document.createElement("button");
+      remove.className = "remove-cart-btn";
+      remove.type = "button";
+      remove.textContent = "Remove";
+      remove.addEventListener("click", () => removeFromCart(item.id));
+
+      controls.append(quantity, remove);
+      main.append(name, meta, controls);
+      row.append(image, main);
+      return row;
+    }
+
+    function updateCartQuantity(id, nextQuantity) {
+      const item = state.cart.find((cartItem) => cartItem.id === id);
+      if (!item) return;
+
+      if (nextQuantity <= 0) {
+        removeFromCart(id);
+        return;
+      }
+
+      item.quantity = Math.min(nextQuantity, 99);
+      saveCart();
+      renderCart();
+    }
+
+    function removeFromCart(id) {
+      state.cart = state.cart.filter((item) => item.id !== id);
+      saveCart();
+      renderCart();
+    }
+
+    function openCart() {
+      cartPanel.classList.add("open");
+      cartBackdrop.classList.add("open");
+      cartPanel.setAttribute("aria-hidden", "false");
+      cartToggle.setAttribute("aria-expanded", "true");
+      cartClose.focus();
+    }
+
+    function closeCart() {
+      cartPanel.classList.remove("open");
+      cartBackdrop.classList.remove("open");
+      cartPanel.setAttribute("aria-hidden", "true");
+      cartToggle.setAttribute("aria-expanded", "false");
+    }
+
+    function getCartTotal() {
+      return state.cart.reduce((total, item) => total + item.quantity, 0);
+    }
+
+    function saveCart() {
+      try {
+        localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(state.cart));
+      } catch (error) {
+        showToast("Cart could not be saved in this browser.");
+      }
+    }
+
+    function loadCart() {
+      try {
+        const parsed = JSON.parse(localStorage.getItem(CART_STORAGE_KEY) || "[]");
+        if (!Array.isArray(parsed)) return [];
+        return parsed.map(normalizeCartItem).filter(Boolean);
+      } catch (error) {
+        return [];
+      }
+    }
+
+    function normalizeCartItem(item) {
+      if (!item || !isTrustedImageUrl(item.imageUrl) || !item.shop) return null;
+
+      const quantity = Math.max(1, Math.min(Number.parseInt(item.quantity, 10) || 1, 99));
+      const rating = Number(item.rating);
+      if (!Number.isFinite(rating)) return null;
+
+      return {
+        id: String(item.id || ""),
+        name: String(item.name || "Rose").slice(0, 80),
+        imageUrl: String(item.imageUrl),
+        shape: String(item.shape || "rose").slice(0, 40),
+        rating,
+        shop: {
+          country: String(item.shop.country || "Unknown").slice(0, 60),
+          name: String(item.shop.name || "Flower shop").slice(0, 80)
+        },
+        quantity
+      };
+    }
+
+    /*
+      Checkout logic:
+      JSZip creates one ZIP in the browser and FileSaver saves it. Each cart item is
+      matched to the loaded catalog before fetch(), then downloaded with CORS. Failed
+      image fetches are skipped while the rest of the bouquet continues.
+    */
+    async function checkoutCart() {
+      const total = getCartTotal();
+      if (total === 0) {
+        openCart();
+        showToast("Cart is empty");
+        return;
+      }
+
+      if (!state.hasOrdered) {
+        showToast("Order flowers before checkout.");
+        return;
+      }
+
+      if (typeof JSZip !== "function") {
+        showToast("ZIP library is still loading. Try again in a moment.");
+        return;
+      }
+
+      state.checkoutInProgress = true;
+      cartStatus.textContent = "Preparing your bouquet...";
+      renderCart();
+      showToast("Your bouquet is being prepared for download \uD83D\uDC96");
+
+      const zip = new JSZip();
+      const failedNames = [];
+      let addedImages = 0;
+
+      for (const item of state.cart) {
+        const rose = getCatalogRoseById(item.id);
+        if (!rose || rose.imageUrl !== item.imageUrl || !isTrustedImageUrl(rose.imageUrl)) {
+          failedNames.push(item.name);
+          continue;
+        }
+
+        try {
+          const blob = await fetchRoseImageBlob(rose);
+          const extension = imageExtension(blob, rose.imageUrl);
+          const baseName = `${safeZipFileName(rose.name)}_${safeZipFileName(rose.id)}`;
+
+          for (let copy = 1; copy <= item.quantity; copy += 1) {
+            const copySuffix = item.quantity > 1 ? `_${copy}` : "";
+            zip.file(`${baseName}${copySuffix}.${extension}`, blob);
+            addedImages += 1;
+          }
+        } catch (error) {
+          failedNames.push(item.name);
+        }
+      }
+
+      try {
+        if (addedImages === 0) {
+          showToast("No cart images could be fetched for the ZIP.");
+          return;
+        }
+
+        const zipBlob = await zip.generateAsync({
+          type: "blob",
+          compression: "DEFLATE",
+          compressionOptions: { level: 6 }
+        });
+
+        saveZipBlob(zipBlob, "my_love_roses.zip");
+
+        if (failedNames.length) {
+          showToast(`Warning: ${failedNames.length} image${failedNames.length === 1 ? "" : "s"} skipped. ${addedImages} zipped.`);
+        } else {
+          showToast("Your bouquet ZIP is downloading.");
+        }
+      } finally {
+        state.checkoutInProgress = false;
+        renderCart();
+      }
+    }
+
+    function getCatalogRoseById(id) {
+      return state.roses.find((rose) => rose.id === id) || null;
+    }
+
+    async function fetchRoseImageBlob(rose) {
+      const response = await fetch(rose.imageUrl, {
+        method: "GET",
+        mode: "cors",
+        credentials: "omit",
+        referrerPolicy: "no-referrer"
+      });
+
+      if (!response.ok) {
+        throw new Error("Image download failed.");
+      }
+
+      const blob = await response.blob();
+      if (!blob.type.startsWith("image/")) {
+        throw new Error("Downloaded file is not an image.");
+      }
+
+      return blob;
+    }
+
+    function saveZipBlob(blob, fileName) {
+      if (typeof saveAs === "function") {
+        saveAs(blob, fileName);
+        return;
+      }
+
+      const objectUrl = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = objectUrl;
+      link.download = fileName;
+      document.body.append(link);
+      link.click();
+      link.remove();
+      window.setTimeout(() => URL.revokeObjectURL(objectUrl), 0);
+    }
+
+    function imageExtension(blob, imageUrl) {
+      const type = blob.type.toLowerCase();
+      if (type.includes("png")) return "png";
+      if (type.includes("webp")) return "webp";
+      if (type.includes("gif")) return "gif";
+      if (type.includes("jpeg") || type.includes("jpg")) return "jpg";
+
+      try {
+        const path = new URL(imageUrl).pathname;
+        const match = path.match(/\.([a-z0-9]{3,4})$/i);
+        if (match && /^(jpe?g|png|webp|gif)$/i.test(match[1])) {
+          return match[1].toLowerCase().replace("jpeg", "jpg");
+        }
+      } catch (error) {
+        return "jpg";
+      }
+
+      return "jpg";
+    }
+
+    function safeZipFileName(value) {
+      const cleaned = String(value)
+        .normalize("NFKD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/[^a-z0-9]+/gi, "_")
+        .replace(/^_+|_+$/g, "");
+      return cleaned || "rose";
     }
 
     /*
